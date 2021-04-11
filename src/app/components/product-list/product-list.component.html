@@ -1,0 +1,5 @@
+<!-- aici scriu ce afisez -->
+<!-- products: Product[] -->
+<p *ngFor="let tempProduct of products">
+    {{tempProduct.name}}: {{tempProduct.unitPrice | currency: 'RON '}}
+</p>
