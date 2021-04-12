@@ -19,6 +19,18 @@ export class ProductService {
 
   // mapeaza datele din json din spring si returneaza un array de observable
 
+  getProductListPaginate(thePage: number,
+                        thePageSize: number,
+                        theCategoryId: number): Observable<GetResponseProducts> {
+
+    //trebuie sa creez URL pe baza category id, page si size
+    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`
+                    + `&page=${thePage}&size=${thePageSize}`;
+
+    return this.httpClient.get<GetResponseProducts>(searchUrl);
+
+  }
+  
   getProductList(theCategoryId: number): Observable<Product[]> {
 
     //trebuie sa creez URL pe baza category id
@@ -60,6 +72,12 @@ export class ProductService {
 interface GetResponseProducts {
   _embedded:{
     products: Product[];
+  }, 
+  page: {
+    size: number,
+    totalElements: number,
+    totalPages: number,
+    number: number
   }
 }
 
