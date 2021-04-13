@@ -17,7 +17,7 @@ export class ProductListComponent implements OnInit {
 
   //pentru paginatie
   thePageNumber: number = 1;
-  thePageSize: number =10;
+  thePageSize: number = 5;
   theTotalElements: number = 0;
   
 
