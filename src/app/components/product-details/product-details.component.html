@@ -4,7 +4,7 @@
 
         <h3> {{ product.name }}</h3>
         <div class="price"> {{ product.unitPrice | currency:'RON '}} </div>
-        <a href="#" class="primary-btn"> Cumpara-ma! </a>
+        <button (click)="addToCart()" class="btn btn-primary btn-sm"> Adauga in cos </button>
 
         <hr>
         <h4> Despre produs </h4>

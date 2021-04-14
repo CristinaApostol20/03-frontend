@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CartItem } from 'src/app/common/cart-item';
 import { Product } from 'src/app/common/product';
+import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -19,10 +21,13 @@ export class ProductListComponent implements OnInit {
   thePageNumber: number = 1;
   thePageSize: number = 5;
   theTotalElements: number = 0;
+
+  previousKeyword: string = null;
   
 
   constructor(private productService: ProductService,
-    private route: ActivatedRoute) { } //injectam activated route, pentru a accesa parametri rutei
+              private cartService: CartService,
+              private route: ActivatedRoute) { } //injectam activated route, pentru a accesa parametri rutei
 
   ngOnInit() {
     this.route.paramMap.subscribe(() => {
@@ -45,13 +50,18 @@ export class ProductListComponent implements OnInit {
   handleSearchProducts() {
     const theKeyword: string = this.route.snapshot.paramMap.get('keyword');
 
+    if(this.previousKeyword != theKeyword) {
+      this.thePageNumber = 1;
+    }
+
+    this.previousKeyword = theKeyword;
+
+    console.log(`keyword=${theKeyword}, thePageNumber=${this.thePageNumber}`);
+
     //acum cautam produsul folosind keyword
-    this.productService.searchProducts(theKeyword).subscribe(
-      data => {
-        console.log(data);
-        this.products = data;
-      }
-    )
+    this.productService.searchProductsPaginate(this.thePageNumber -1,
+                                               this.thePageSize,
+                                              theKeyword).subscribe(this.processResult());
   }
 
   handleListProducts() {
@@ -96,5 +106,18 @@ export class ProductListComponent implements OnInit {
       this.thePageSize = data.page.size;
       this.theTotalElements = data.page.totalElements;
     };
+  }
+
+  updatePageSize(pageSize: number){
+    this.thePageSize = pageSize;
+    this.thePageNumber = 1;
+    this.listProducts(); //ca sa reincarce pagina cu produsele
+  }
+
+  addToCart(theProduct: Product) {
+    console.log(`Adaugat in cos: ${theProduct.name}, ${theProduct.unitPrice}`);
+
+    const theCartItem = new CartItem(theProduct);
+    this.cartService.addToCart(theCartItem);
   }
 }

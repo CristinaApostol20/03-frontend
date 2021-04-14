@@ -14,7 +14,7 @@
                         </a>
                         
                         <div class="price">{{ tempProduct.unitPrice | currency: 'RON '}}</div>
-                        <a href="#" class="primary-btn"> Adauga in cos</a>
+                        <button (click)="addToCart(tempProduct)" class="btn btn-primary btn-sm" > Adauga in cos</button>
                     </div>
                 </div>
 
@@ -39,9 +39,24 @@
                                                 [(page)]="thePageNumber" 
                                                 [pageSize]="thePageSize"
                                                 [collectionSize]="theTotalElements"
+                                                [maxSize]="5"
+                                                [boundaryLinks]="true"
                                                 (pageChange)="listProducts()"> <!-- event-binding-->
 
                                 </ngb-pagination>
+
+                            </div>
+
+                            <div class="col-md-3 mt-2" style="text-align: right;">
+                                <span class="mr-2">  </span>
+
+                                <select (change)="updatePageSize($event.target.value)">
+                                    <option selected="true">5</option>
+                                    <option>10</option>
+                                    <option>15</option>
+                                    <option>50</option>
+                                </select>
+
                             </div>
                         </div>
                     </div>

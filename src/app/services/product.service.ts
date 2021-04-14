@@ -9,7 +9,7 @@ import { ProductCategory } from '../common/product-category';
   providedIn: 'root'
 })
 export class ProductService {
-  
+
 
   private baseUrl = 'http://localhost:8080/api/products';
   private categoryUrl = 'http://localhost:8080/api/product-category';
@@ -20,17 +20,17 @@ export class ProductService {
   // mapeaza datele din json din spring si returneaza un array de observable
 
   getProductListPaginate(thePage: number,
-                        thePageSize: number,
-                        theCategoryId: number): Observable<GetResponseProducts> {
+    thePageSize: number,
+    theCategoryId: number): Observable<GetResponseProducts> {
 
     //trebuie sa creez URL pe baza category id, page si size
     const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`
-                    + `&page=${thePage}&size=${thePageSize}`;
+      + `&page=${thePage}&size=${thePageSize}`;
 
     return this.httpClient.get<GetResponseProducts>(searchUrl);
 
   }
-  
+
   getProductList(theCategoryId: number): Observable<Product[]> {
 
     //trebuie sa creez URL pe baza category id
@@ -46,6 +46,18 @@ export class ProductService {
     const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}`;
 
     return this.getProducts(searchUrl);
+  }
+
+  searchProductsPaginate(thePage: number,
+                        thePageSize: number,
+                        theKeyword: string): Observable<GetResponseProducts> {
+
+    //trebuie sa creez URL pe baza keyword, page si size
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}`
+                      + `&page=${thePage}&size=${thePageSize}`;
+
+    return this.httpClient.get<GetResponseProducts>(searchUrl);
+
   }
 
   private getProducts(searchUrl: string): Observable<Product[]> {
@@ -70,9 +82,9 @@ export class ProductService {
 }
 
 interface GetResponseProducts {
-  _embedded:{
+  _embedded: {
     products: Product[];
-  }, 
+  },
   page: {
     size: number,
     totalElements: number,
@@ -82,7 +94,7 @@ interface GetResponseProducts {
 }
 
 interface GetResponseProductCategory {
-  _embedded:{
+  _embedded: {
     productCategory: ProductCategory[];
   }
 }
