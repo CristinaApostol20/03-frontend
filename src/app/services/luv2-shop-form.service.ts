@@ -21,7 +21,7 @@ export class Luv2ShopFormService {
     );
   }
 
-  getStates(theCountryCode: string): Observable<State[]>{
+  getStates(theCountryCode: string): Observable<State[]> {
     const searchStateUrl = `${this.statesUrl}/search/findByCountryCode?code=${theCountryCode}`;
 
     return this.httpClient.get<GetResponseStates>(searchStateUrl).pipe(
