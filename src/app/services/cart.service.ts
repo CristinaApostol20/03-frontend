@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { CartItem } from '../common/cart-item';
 
 @Injectable({
@@ -9,8 +9,8 @@ export class CartService {
 
   cartItems: CartItem[] = [];
 
-  totalPrice: Subject <number> = new Subject<number>(); //subject e o subclass a lui observable, publica evenimente in cod
-  totalQuantity: Subject <number> = new Subject<number>();
+  totalPrice: Subject <number> = new BehaviorSubject<number>(0); //behaviorsubject  publica ulimul eveniment in cod
+  totalQuantity: Subject <number> = new BehaviorSubject<number>(0);
 
   constructor() { }
 
