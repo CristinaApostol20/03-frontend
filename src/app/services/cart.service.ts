@@ -12,7 +12,19 @@ export class CartService {
   totalPrice: Subject <number> = new BehaviorSubject<number>(0); //behaviorsubject  publica ulimul eveniment in cod
   totalQuantity: Subject <number> = new BehaviorSubject<number>(0);
 
-  constructor() { }
+  storage: Storage = localStorage; //datele raman si dupa ce inchid browserul
+
+  constructor() { 
+    //citim datele din storage
+    let data = JSON.parse(this.storage.getItem('cartItems'));
+
+    if( data!= null) {
+      this.cartItems = data;
+
+      //calculam totalul pe baza dateleor din storage
+      this.computeCartTotals();
+    }
+  }
 
   addToCart(theCartItem: CartItem) {
     //verificam mai intai daca avem produsul in cos
@@ -56,6 +68,8 @@ export class CartService {
     this.totalQuantity.next(totalQuantityValue);
 
     this.logCartData(totalPriceValue, totalQuantityValue);
+
+    this.persistCartItems();
   }
 
 
@@ -93,5 +107,9 @@ export class CartService {
 
       this.computeCartTotals();
     }
+  }
+
+  persistCartItems(){
+    this.storage.setItem('cartItems', JSON.stringify(this.cartItems)); //cheie + valoare
   }
 }
