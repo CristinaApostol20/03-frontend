@@ -1,0 +1,39 @@
+<div class="main-content">
+    <div class="section-content section-content-p30">
+        <div class="container-fluid">
+            <h3>Comenzile tale</h3>
+
+            <div *ngIf="orderHistoryList.length > 0">
+                <table class="table table-bordered">
+                    <tr>
+                        <th width="20%">Numarul comenzii</th>
+                        <th width="10%">Pretul total</th>
+                        <th width="10%">Numarul total al produselor</th>
+                        <th width="10%">Data</th>
+                    </tr>
+
+                    <tr *ngFor="let tempOrderHistory of orderHistoryList">
+                        <td>
+                            {{ tempOrderHistory.orderTrackingNumber }}
+                        </td>
+                        <td>
+                            {{ tempOrderHistory.totalPrice | currency: 'RON ' }}
+                        </td>
+                        <td>
+                            {{ tempOrderHistory.totalQuantity }}
+                        </td>
+                        <td>
+                            {{ tempOrderHistory.dateCreated | date: 'medium' }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- afiseaza un mesaj daca nu gaseste comenzi -->
+            <div *ngIf="orderHistoryList.length == 0" class="alert alert-warning col-md-12" role="alert">
+                Nu exista comenzi.
+            </div>
+
+        </div>
+    </div>
+</div>

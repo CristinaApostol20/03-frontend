@@ -24,10 +24,12 @@ import { LoginStatusComponent } from './components/login-status/login-status.com
 import {
     OKTA_CONFIG,
     OktaAuthModule,
-    OktaCallbackComponent
+    OktaCallbackComponent,
+    OktaAuthGuard
 } from '@okta/okta-angular';
 
 import myAppConfig from './config/my-app-config';
+import { OrderHistoryComponent } from './components/order-history/order-history.component';
 
 const oktaConfig = Object.assign({
   onAuthRequired: (injector) => {
@@ -39,6 +41,7 @@ const oktaConfig = Object.assign({
 
 const routes: Routes = [
   //cu okta, cand userul se autentifica, este rediretionat la aplicatie
+  {path: 'order-history', component: OrderHistoryComponent, canActivate: [ OktaAuthGuard ]},
   {path: 'login/callback', component: OktaCallbackComponent},
   {path: 'login', component: LoginComponent},
   {path: 'checkout', component: CheckoutComponent},
@@ -63,7 +66,8 @@ const routes: Routes = [
     CartDetailsComponent,
     CheckoutComponent,
     LoginComponent,
-    LoginStatusComponent
+    LoginStatusComponent,
+    OrderHistoryComponent
   ],
   imports: [
     //configurez routerul pentru route
